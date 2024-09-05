@@ -4,7 +4,7 @@ import { defineConfig } from "vite";
 
 const manifest = defineManifest({
   manifest_version: 3,
-  name: "chrome-extension-template",
+  name: "github-extension",
   version: "1.0.0",
   action: {
     default_popup: "index.html",

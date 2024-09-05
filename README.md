@@ -1,4 +1,4 @@
-# chrome-extension-template
+# github-extension
 
 Vite + React + TypeScript + CRXJS の Chrome 拡張機能テンプレート
 
