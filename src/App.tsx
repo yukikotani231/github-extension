@@ -1,43 +1,30 @@
-import { useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import './App.css'
-import { BGMessage } from './background'
-import { CSMessage } from './contentScript/script'
 
 function App() {
-  const [message, setMessage] = useState('')
+  const [pat, setPat] = useState('')
 
-  const handleConnectToContentScript = async () => {
-    const tabs = await chrome.tabs.query({ active: true, currentWindow: true })
-    const currentTab = tabs[0]
-    if (currentTab.id === undefined) {
-      setMessage('No active tab found')
-      return
-    }
+  const getPat = useCallback(async () => {
+    const pat = (await chrome.storage.local.get('pat'))['pat']
+    setPat(pat)
+  }, [])
 
-    const response = await chrome.tabs.sendMessage<CSMessage, string>(currentTab.id, { action: 'hello' })
-    setMessage(response)
-  }
+  const updatePat = useCallback(async (pat: string) => {
+    await chrome.storage.local.set({ pat })
+  }, [])
 
-  const handleConntectToBackgroundScript = async () => {
-    const response = await chrome.runtime.sendMessage<BGMessage, string>({ action: 'hello' })
-    setMessage(response)
-  }
+  useEffect(() => {
+    getPat()
+  }, [getPat])
 
   return (
     <div>
-      <h1>Chrome Extention Template</h1>
+      <h1>Gitthub Extension</h1>
       <div className="card">
-        <button onClick={handleConnectToContentScript}>
-          connect to content script
-        </button>
+        <h2>Personal Access Token</h2>
+        <button onClick={() => updatePat(pat)}>Update</button>
         <br />
-        <br />
-        <button onClick={handleConntectToBackgroundScript}>
-          connect to background script
-        </button>
-        <br />
-        <br />
-        {message && <p>{message}</p>}
+        <input type="text" value={pat} onChange={(e) => setPat(e.target.value)} />
       </div>
     </div>
   )

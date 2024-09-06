@@ -1,0 +1,1 @@
+import './prlist-show-diff'

@@ -1,12 +1,24 @@
 console.log('service worker initialized')
 
 export type BGMessage = {
-  action: string
+  action: 'get_pat'
+} | {
+  action: 'set_pat'
+  pat: string
 }
 
-chrome.runtime.onMessage.addListener(async (message: BGMessage, sender, sendResponse) => {
-  const response = `background script received message: ${message.action}`
-  console.log(response)
-  console.log('sender:', sender)
-  sendResponse(response)
+// TODO: うまく取得できないので見直し
+chrome.runtime.onMessage.addListener(async (message: BGMessage, _, sendResponse) => {
+  switch (message.action) {
+    case 'get_pat': {
+      const pat = (await chrome.storage.local.get('pat'))['pat']
+      sendResponse(pat)
+      break
+    }
+    case 'set_pat': {
+      await chrome.storage.local.set({ pat: message.pat })
+      sendResponse('pat set')
+      break
+    }
+  }
 })

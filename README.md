@@ -1,6 +1,22 @@
 # github-extension
 
-Vite + React + TypeScript + CRXJS の Chrome 拡張機能テンプレート
+githubに便利機能を追加するChrome拡張機能
+
+# 開発
+
+## セットアップ
+
+```bash
+npm i
+```
+
+## 起動
+  
+```bash
+npm run dev
+```
+
+上記実行後，distフォルダができるのでChromeの拡張機能の管理で読み込む
 
 ## Expanding the ESLint configuration
 

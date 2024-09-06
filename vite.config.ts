@@ -11,13 +11,14 @@ const manifest = defineManifest({
   },
   content_scripts: [
     {
-      matches: ["https://*/*"],
-      js: ["src/contentScript/script.ts"],
+      matches: ["https://github.com/*"],
+      js: ["src/contentScript/index.ts"],
     },
   ],
   background: {
     service_worker: "src/background/index.ts",
   },
+  permissions: ["storage"],
 });
 
 // https://vitejs.dev/config/
@@ -25,9 +26,7 @@ export default defineConfig(({ command }) => {
   const server = command === 'build' ? undefined : {
     port: 5174,
     strictPort: true,
-    hmr: {
-      port: 5174,
-    },
+    hmr: { port: 5174 },
   }
 
   return {
